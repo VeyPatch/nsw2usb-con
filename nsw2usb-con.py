@@ -28,12 +28,21 @@ def main():
         sys.exit("error: controller not found")
 
     # configure + claim
-    dev.set_configuration()
     if dev.is_kernel_driver_active(INTERFACE):
         try:
             dev.detach_kernel_driver(INTERFACE)
         except usb.core.USBError:
             pass
+
+    # Only call set_configuration if not set yet
+    try:
+        cfg = dev.get_active_configuration()
+    except usb.core.USBError:
+        cfg = None
+
+    if cfg is None:
+        dev.set_configuration()
+
     usb.util.claim_interface(dev, INTERFACE)
 
     # locate bulk-out endpoint
