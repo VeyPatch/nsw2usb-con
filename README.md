@@ -14,6 +14,20 @@ Install dependencies with:
 % pip install pyusb
 ```
 
+### Linux
+
+Add linux udev:
+```zsh
+% echo -e 'SUBSYSTEM=="usb", ATTR{idVendor}=="057e", ATTR{idProduct}=="2069", MODE="0666"\nSUBSYSTEM=="usb", ATTR{idVendor}=="057e", ATTR{idProduct}=="2073", MODE="0666"' | sudo tee /etc/udev/rules.d/60-Nintendo.rules > /dev/null
+```
+
+Reload udev:
+```zsh
+% sudo udevadm control --reload && sudo udevadm trigger
+```
+
+### macOS
+
 macOS users might have to install libusb (via brew is recommended, see [https://brew.sh](https://brew.sh))
 
 ```zsh
